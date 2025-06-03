@@ -16,18 +16,19 @@ export default function QRScanner() {
 
     const cameras = await Html5Qrcode.getCameras();
     if (cameras && cameras.length) {
-      const cameraId = cameras[0].id;
+      // Try to find a back/rear camera
+      const backCamera =
+        cameras.find((cam) => /back|rear/i.test(cam.label)) || cameras[0]; // fallback to first camera if not found
 
       html5QrCode
         .start(
-          cameraId,
+          backCamera.id,
           { fps: 10, qrbox: 250 },
           (decodedText) => {
             html5QrCode.stop();
             window.location.href = decodedText; // Redirect
           },
           (errorMessage) => {
-            // You can handle scan errors here (optional)
             console.warn(errorMessage);
           }
         )
@@ -35,6 +36,7 @@ export default function QRScanner() {
         .catch((err) => console.error("Start error:", err));
     }
   };
+  
 
   useEffect(() => {
     return () => {
