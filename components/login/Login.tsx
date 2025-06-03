@@ -24,7 +24,7 @@ const Login = () => {
   const [otp, setOtp] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -86,7 +86,7 @@ const Login = () => {
           <>
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl font-bold text-center">
-                India's #1 Dining App
+                {`India's #1 Dining App`}
               </CardTitle>
               <CardDescription className="text-center">
                 Enter your credentials to sign in to your account
@@ -111,7 +111,7 @@ const Login = () => {
           <>
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl font-bold text-center">
-                India's #1 Dining App
+                {`India's #1 Dining App`}
               </CardTitle>
               <CardDescription className="text-center">
                 Enter the OTP sent to your mobile number
