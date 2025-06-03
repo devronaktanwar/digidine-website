@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { PiStethoscopeBold } from "react-icons/pi";
 import { RiMenu2Fill } from "react-icons/ri";
 import MobileNav from "./MobileNav";
 import { useRouter } from "next/navigation";
