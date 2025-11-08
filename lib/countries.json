@@ -1,0 +1,22 @@
+[
+  { "label": "🇺🇸 +1 (USA)", "value": "+1", "code": "US" },
+  { "label": "🇬🇧 +44 (UK)", "value": "+44", "code": "GB" },
+  { "label": "🇮🇳 +91 (India)", "value": "+91", "code": "IN" },
+  { "label": "🇦🇺 +61 (Australia)", "value": "+61", "code": "AU" },
+  { "label": "🇯🇵 +81 (Japan)", "value": "+81", "code": "JP" },
+  { "label": "🇩🇪 +49 (Germany)", "value": "+49", "code": "DE" },
+  { "label": "🇫🇷 +33 (France)", "value": "+33", "code": "FR" },
+  { "label": "🇮🇹 +39 (Italy)", "value": "+39", "code": "IT" },
+  { "label": "🇨🇳 +86 (China)", "value": "+86", "code": "CN" },
+  { "label": "🇦🇪 +971 (UAE)", "value": "+971", "code": "AE" },
+  { "label": "🇧🇩 +880 (Bangladesh)", "value": "+880", "code": "BD" },
+  { "label": "🇵🇰 +92 (Pakistan)", "value": "+92", "code": "PK" },
+  { "label": "🇱🇰 +94 (Sri Lanka)", "value": "+94", "code": "LK" },
+  { "label": "🇸🇦 +966 (Saudi Arabia)", "value": "+966", "code": "SA" },
+  { "label": "🇷🇺 +7 (Russia)", "value": "+7", "code": "RU" },
+  { "label": "🇪🇸 +34 (Spain)", "value": "+34", "code": "ES" },
+  { "label": "🇧🇷 +55 (Brazil)", "value": "+55", "code": "BR" },
+  { "label": "🇿🇦 +27 (South Africa)", "value": "+27", "code": "ZA" },
+  { "label": "🇰🇷 +82 (South Korea)", "value": "+82", "code": "KR" },
+  { "label": "🇸🇬 +65 (Singapore)", "value": "+65", "code": "SG" }
+]

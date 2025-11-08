@@ -1,64 +1,113 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { RiMenu2Fill } from "react-icons/ri";
-import MobileNav from "./MobileNav";
-import { useRouter } from "next/navigation";
+'use client';
 
-const Navbar = () => {
-  const [openMenu, setOpenMenu] = useState(false);
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
+import { useSessionStore } from '@/store/customerStore';
+import AvatarWithDropdown from './AvatarWithDropdown';
+
+export function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { session } = useSessionStore();
+  console.log({ session });
+
   const router = useRouter();
-  const isLoggedIn = false;
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/services', label: 'Services' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <>
-      <div className="py-4 sticky top-0 px-4">
-        <div className="max-screen border px-6 py-3 rounded-lg bg-white/10 backdrop-blur-lg flex justify-between items-center">
-          <h1 className="flex-1">
-            <Image src="/logo.png" alt="logo" width={100} height={10} />
-          </h1>
-          <div className="hidden md:flex items-center gap-12">
-            {isLoggedIn && (
-              <ul className="flex items-center gap-8">
-                {navLinks.map((link) => (
-                  <li key={link.name} className="font-medium">
-                    <Link href={link.href}>{link.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div>
-              <Button className="!py-6 !px-6" onClick={() => router.push("/login")}>Login</Button>
+    <nav className="sticky top-0 z-50 backdrop-blur-xl  border-b border-border/50">
+      <div className="md:max-w-[80%] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <a href="#" className="text-2xl font-black text-primary">
+              DigiDine
+            </a>
+          </div>
+
+          {/* Desktop Navigation */}
+          {/* <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-primary transition-colors duration-200 px-3 py-2 text-sm font-medium"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
+          </div> */}
+
+          {/* Desktop CTA Button */}
+          <div className="hidden md:block">
+            {!session?.isLoggedIn ? (
+              <Button onClick={() => router.push('/register')}>Sign Up</Button>
+            ) : (
+              <AvatarWithDropdown />
+            )}
           </div>
-          <div
-            className="text-primary md:hidden"
-            onClick={() => setOpenMenu(true)}
-          >
-            <RiMenu2Fill size={24} />
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleMenu}
+              className="text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
           </div>
-          <MobileNav
-            open={openMenu}
-            setOpen={setOpenMenu}
-            navLinks={navLinks}
-            isLoggedIn={isLoggedIn}
-          />
         </div>
       </div>
-    </>
+
+      {/* Mobile Navigation Menu */}
+      <div
+        className={cn(
+          'md:hidden transition-all duration-300 ease-in-out backdrop-blur-md bg-primary/95 border-b border-border/50',
+          isOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        )}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          {/* {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-primary-foreground hover:text-accent hover:bg-primary-foreground/10 block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-md"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))} */}
+          <div className="pt-2">
+            <Button
+              variant="secondary"
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+              onClick={() => setIsOpen(false)}
+            >
+              Sign Up
+            </Button>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
-};
-
-export default Navbar;
-
-const navLinks = [
-  {
-    name: "My Orders",
-    href: "/my-orders",
-  },
-  {
-    name: "Profile",
-    href: "/my-profile",
-  },
-];
+}

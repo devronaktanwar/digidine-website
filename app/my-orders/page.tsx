@@ -1,9 +1,14 @@
-import React from 'react'
+import MyOrders from '@/components/my-orders/MyOrders';
+import { Navbar } from '@/components/navbar/Navbar';
+import React from 'react';
 
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <Navbar />
+      <MyOrders />
+    </div>
+  );
+};
 
-export default page
+export default page;

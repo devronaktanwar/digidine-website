@@ -1,151 +1,129 @@
-"use client";
-import React, { useState } from "react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+'use client';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { CustomerApis } from '@/apis/Customer';
+import { useSessionStore } from '@/store/customerStore';
 
-const Login = () => {
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1); // 1: mobile input, 2: OTP
-  const [formData, setFormData] = useState({ mobileNo: "" });
-  const [otp, setOtp] = useState("");
-  const router = useRouter();
+export default function Login() {
+  const { session, fetchSession } = useSessionStore();
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-
-      if (step === 1) {
-        // Call your backend to send OTP here
-        // const response = await apiClient.post("/send-otp", { mobileNo: formData.mobileNo });
-        const response = { data: { isSuccess: true } }; // mock
-
-        if (response.data.isSuccess) {
-          toast.success("OTP sent successfully", {
-            position: "top-right",
-            description: "Please enter the OTP to continue",
-          });
-          setStep(2);
-        } else {
-          toast.error("Failed to send OTP", {
-            position: "top-right",
-          });
-        }
-      } else {
-        // Submit OTP verification here
-        // const verifyRes = await apiClient.post("/verify-otp", { mobileNo: formData.mobileNo, otp });
-        const verifyRes = { data: { isSuccess: true } }; // mock
-
-        if (verifyRes.data.isSuccess) {
-          toast.success("Signed in successfully", {
-            position: "top-right",
-            description: "Redirecting to home page...",
-          });
-          setTimeout(() => {
-            router.push("/scan");
-          }, 4000);
-        } else {
-          toast.error("Invalid OTP", {
-            position: "top-right",
-          });
-        }
-      }
-    } catch (err) {
-      console.error("Error:", err);
-    } finally {
-      setLoading(false);
+    setLoading(true);
+    const response = await CustomerApis.loginUser(
+      formData.email,
+      formData.password
+    );
+    if (response.isSuccess) {
+      toast.success('Login successful', {
+        description: 'You’ve been logged in successfully',
+      });
+      await fetchSession();
+    } else {
+      toast.error(response.err, {
+        description: 'The email or password you entered is incorrect.',
+      });
     }
+    setLoading(false);
   };
 
+  console.log({ session });
   return (
-    <Card className="max-w-lg w-full h-fit !pt-0 overflow-hidden rounded-none sm:rounded-xl border-0 shadow-none sm:border sm:shadow">
-      <Image
-        src="/login-banner.webp"
-        alt="login-banner"
-        width={500}
-        height={500}
-        className="w-full"
-      />
+    <div className="flex min-h-screen items-center justify-center bg-default px-4 w-full">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">
+            Sign In
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your credentials to access your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <form className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                required
+                className="w-full"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                required
+                className="w-full"
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                value={formData.password}
+              />
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={handleLogin}
+              disabled={loading}
+            >
+              {loading ? 'Signing...' : 'Sign In'}
+            </Button>
+          </form>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {step === 1 && (
-          <>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl font-bold text-center">
-                {`India's #1 Dining App`}
-              </CardTitle>
-              <CardDescription className="text-center">
-                Enter your credentials to sign in to your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              <div className="flex flex-col gap-1">
-                <Label className="text-sm">Enter phone number</Label>
-                <Input
-                  type="text"
-                  className="text-sm font-medium"
-                  onChange={(e) =>
-                    setFormData({ ...formData, mobileNo: e.target.value })
-                  }
-                />
-              </div>
-            </CardContent>
-          </>
-        )}
+          {/* Forgot Password Link */}
+          <div className="text-center">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-gray-600 font-medium hover:underline"
+            >
+              Forgot your password?
+            </Link>
+          </div>
 
-        {step === 2 && (
-          <>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl font-bold text-center">
-                {`India's #1 Dining App`}
-              </CardTitle>
-              <CardDescription className="text-center">
-                Enter the OTP sent to your mobile number
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-              <InputOTP
-                maxLength={6}
-                pattern={REGEXP_ONLY_DIGITS}
-                value={otp}
-                onChange={setOtp}
-                size={24}
+          {/* Sign Up Link */}
+          <div className="text-center pt-4 border-t">
+            <p className="font-medium text-sm text-gray-600">
+              Not a user?{' '}
+              <Link
+                href="/signup"
+                className="text-primary hover:underline font-medium"
               >
-                <InputOTPGroup>
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <InputOTPSlot key={i} index={i} />
-                  ))}
-                </InputOTPGroup>
-              </InputOTP>
-            </CardContent>
-          </>
-        )}
-
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full p-6" disabled={loading}>
-            {loading ? "Please wait..." : "Continue"}
-          </Button>
-          <p className="text-xs text-center font-medium text-gray-500">
-            By continuing you agree to our terms and conditions
-          </p>
-        </CardFooter>
-      </form>
-    </Card>
+                Create an account
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
-};
-
-export default Login;
+}
+interface LoginFormData {
+  email: string;
+  password: string;
+}
