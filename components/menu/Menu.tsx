@@ -34,7 +34,7 @@ const Menu = () => {
       </div>
 
       {cart && cart.items?.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md p-4 flex justify-between items-center">
+        <div className="fixed bottom-12 left-0 right-0 bg-white mx-2 border rounded-xl p-4 flex justify-between items-center">
           <div>
             <p className="font-medium text-gray-700">
               {cart.items.length} item(s)
