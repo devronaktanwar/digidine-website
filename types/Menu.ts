@@ -13,6 +13,7 @@ export interface IMenuItemProps {
   business_id: string;
 }
 export interface Addon {
+  _id: string;
   name: string;
   original_price: number;
   selling_price: number;
