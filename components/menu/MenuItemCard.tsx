@@ -7,7 +7,7 @@ import { SiSquare } from 'react-icons/si';
 import { twMerge } from 'tailwind-merge';
 import { Button } from '../ui/button';
 import CommonDrawer from '@/common/components/CommonDrawer';
-import Addons from './Addons';
+import Addons, { IAddon } from './Addons';
 
 const MenuItemCard: FC<IMenuItemProps> = (data) => {
   const {
@@ -25,13 +25,18 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
 
   const { cart, updateCart } = useCartStore();
   const [openAddon, setOpenAddon] = useState<boolean>(false);
-
+  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const existingItem = cart?.items?.find((i) => i.menuItemId === _id);
   const quantity = existingItem?.quantity || 0;
+  const existingAddons = existingItem?.addons || [];
 
   const handleUpdateItem = () => {
     setOpenAddon(true);
-    // updateCart(_id, 1, business_id);
+    setSelectedAddons(existingAddons);
+  };
+
+  const handleAddToCart = () => {
+    updateCart(_id, 1, business_id, selectedAddons);
   };
 
   return (
@@ -78,14 +83,14 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
           ) : (
             <div className="flex items-center gap-4 border rounded-full px-4 py-1">
               <button
-                onClick={() => updateCart(_id, -1, business_id)}
+                onClick={() => updateCart(_id, -1, business_id, addons)}
                 className="text-lg font-semibold cursor-pointer"
               >
                 -
               </button>
               <span>{quantity}</span>
               <button
-                onClick={() => updateCart(_id, 1, business_id)}
+                onClick={() => updateCart(_id, 1, business_id, addons)}
                 className="text-lg font-semibold cursor-pointer"
               >
                 +
@@ -102,7 +107,12 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
         onClose={() => setOpenAddon(false)}
         title={label}
       >
-        <Addons addons={addons} />
+        <Addons
+          addons={addons}
+          selectedAddons={selectedAddons}
+          setSelectedAddons={setSelectedAddons}
+          handleAddToCart={handleAddToCart}
+        />
       </CommonDrawer>
     </>
   );

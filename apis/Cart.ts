@@ -1,3 +1,4 @@
+import { IAddon } from '@/components/menu/Addons';
 import { apiClient } from '@/lib/apiClient';
 
 export const CartApis = {
@@ -5,15 +6,18 @@ export const CartApis = {
     business_id,
     menuItemId,
     quantity,
+    addons,
   }: {
     business_id: string;
     menuItemId: string;
     quantity: number;
+    addons: string[];
   }) => {
     return apiClient.post(`/cart/add`, {
       business_id,
       menuItemId,
       quantity,
+      addons,
     });
   },
 
@@ -24,12 +28,4 @@ export const CartApis = {
   removeItem: async (cartId: string, menuItemId: string) => {
     return apiClient.delete(`$/cart/${cartId}/item/${menuItemId}`);
   },
-
-  // ✅ Place order (optional)
-  // placeOrder: async (cartId: string, customerInfo: any) => {
-  //   return axios.post(`${API_BASE}/order/create`, {
-  //     cartId,
-  //     customerInfo,
-  //   });
-  // },
 };

@@ -1,7 +1,7 @@
 import axios from 'axios';
 export const apiClient = axios.create({
   //use with sameSite:lax in backend
-  baseURL: '/api/v1',
+  baseURL: 'https://digidine.webilix.in/api/v1',
 
   //use when want to use production api call --> api will call via proxy
   // baseURL: 'https://digidine-backend.vercel.app/api/v1',

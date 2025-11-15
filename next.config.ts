@@ -18,15 +18,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://digidine-backend-server.onrender.com/api/:path*',
-        // destination: 'http://localhost:8080/api/:path*',
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/:path*',
+  //       // destination: 'https://digidine-backend-server.onrender.com/api/:path*',
+  //       destination: 'http://localhost:8080/api/:path*',
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;
