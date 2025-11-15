@@ -39,10 +39,10 @@ const Menu = () => {
             <p className="font-medium text-gray-700">
               {cart.items.length} item(s)
             </p>
-            <p className="font-bold text-lg">₹{cart.totalAmount}</p>
+            <p className="font-bold text-lg">₹{cart.total_amount}</p>
           </div>
           <button
-            onClick={() => router.push(`/cart/${cart._id}`)}
+            onClick={() => router.push(`/cart/${cart.cart_id}`)}
             className="bg-primary text-white px-4 py-2 rounded-lg"
           >
             View Cart

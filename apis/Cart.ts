@@ -4,28 +4,28 @@ import { apiClient } from '@/lib/apiClient';
 export const CartApis = {
   addToCart: async ({
     business_id,
-    menuItemId,
+    menu_item_id,
     quantity,
     addons,
   }: {
     business_id: string;
-    menuItemId: string;
+    menu_item_id: string;
     quantity: number;
     addons: string[];
   }) => {
     return apiClient.post(`/cart/add`, {
       business_id,
-      menuItemId,
+      menu_item_id,
       quantity,
       addons,
     });
   },
 
-  getCart: async (businessId: string) => {
-    return apiClient.get(`/cart/${businessId}`);
+  getCart: async (business_id: string) => {
+    return apiClient.get(`/cart/${business_id}`);
   },
 
-  removeItem: async (cartId: string, menuItemId: string) => {
-    return apiClient.delete(`$/cart/${cartId}/item/${menuItemId}`);
+  removeItem: async (cart_id: string, menu_item_id: string) => {
+    return apiClient.delete(`$/cart/${cart_id}/item/${menu_item_id}`);
   },
 };

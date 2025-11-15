@@ -3,7 +3,7 @@ import { CartApis } from '@/apis/Cart';
 import { IAddon } from '@/components/menu/Addons';
 
 interface ICartItem {
-  menuItemId: string;
+  menu_item_id: string;
   label: string;
   description: string;
   original_price: number;
@@ -15,13 +15,14 @@ interface ICartItem {
 
 interface CartState {
   cart: {
-    _id?: string;
+    cart_id?: string;
     items: ICartItem[];
-    totalAmount: number;
+    total_amount: number;
+    business_id: string;
   } | null;
   fetchCart: (val: string) => Promise<void>;
   updateCart: (
-    menuItemId: string,
+    menu_item_id: string,
     quantity: number,
     business_id: string,
     addons: string[]
@@ -31,19 +32,19 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   cart: null,
 
-  fetchCart: async (businessId: string) => {
-    if (!businessId) return;
-    const res = await CartApis.getCart(businessId);
+  fetchCart: async (business_id: string) => {
+    if (!business_id) return;
+    const res = await CartApis.getCart(business_id);
     set({ cart: res.data });
   },
 
-  updateCart: async (menuItemId, quantity, business_id, addons) => {
+  updateCart: async (menu_item_id, quantity, business_id, addons) => {
     const res = await CartApis.addToCart({
       business_id,
-      menuItemId,
+      menu_item_id,
       quantity,
       addons,
     });
-    set({ cart: res.data });
+    // set({ cart: res.data });
   },
 }));

@@ -8,6 +8,7 @@ import { twMerge } from 'tailwind-merge';
 import { Button } from '../ui/button';
 import CommonDrawer from '@/common/components/CommonDrawer';
 import Addons, { IAddon } from './Addons';
+import { useParams } from 'next/navigation';
 
 const MenuItemCard: FC<IMenuItemProps> = (data) => {
   const {
@@ -23,20 +24,29 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
     addons,
   } = data || {};
 
-  const { cart, updateCart } = useCartStore();
+  const { cart, updateCart, fetchCart } = useCartStore();
   const [openAddon, setOpenAddon] = useState<boolean>(false);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
-  const existingItem = cart?.items?.find((i) => i.menuItemId === _id);
+  const existingItem = cart?.items?.find((i) => i.menu_item_id === _id);
   const quantity = existingItem?.quantity || 0;
   const existingAddons = existingItem?.addons || [];
 
+  const params = useParams();
+  const { businessId } = params || {};
+
   const handleUpdateItem = () => {
-    setOpenAddon(true);
-    setSelectedAddons(existingAddons);
+    if (addons.length) {
+      setOpenAddon(true);
+      setSelectedAddons(existingAddons);
+      return;
+    }
+    updateCart(_id, 1, business_id, selectedAddons);
+    fetchCart(businessId as string);
   };
 
   const handleAddToCart = () => {
     updateCart(_id, 1, business_id, selectedAddons);
+    fetchCart(businessId as string);
   };
 
   return (
@@ -83,14 +93,20 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
           ) : (
             <div className="flex items-center gap-4 border rounded-full px-4 py-1">
               <button
-                onClick={() => updateCart(_id, -1, business_id, addons as any)}
+                onClick={() => {
+                  updateCart(_id, -1, business_id, addons as any);
+                  fetchCart(businessId as string);
+                }}
                 className="text-lg font-semibold cursor-pointer"
               >
                 -
               </button>
               <span>{quantity}</span>
               <button
-                onClick={() => updateCart(_id, 1, business_id, addons as any)}
+                onClick={() => {
+                  updateCart(_id, 1, business_id, addons as any);
+                  fetchCart(businessId as string);
+                }}
                 className="text-lg font-semibold cursor-pointer"
               >
                 +
