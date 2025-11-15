@@ -83,14 +83,14 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
           ) : (
             <div className="flex items-center gap-4 border rounded-full px-4 py-1">
               <button
-                onClick={() => updateCart(_id, -1, business_id, addons)}
+                onClick={() => updateCart(_id, -1, business_id, addons as any)}
                 className="text-lg font-semibold cursor-pointer"
               >
                 -
               </button>
               <span>{quantity}</span>
               <button
-                onClick={() => updateCart(_id, 1, business_id, addons)}
+                onClick={() => updateCart(_id, 1, business_id, addons as any)}
                 className="text-lg font-semibold cursor-pointer"
               >
                 +
