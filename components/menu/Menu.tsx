@@ -22,7 +22,7 @@ const Menu = () => {
 
   useEffect(() => {
     fetchMenuItems();
-    fetchCart(businessId as string);
+    fetchCart({ business_id: businessId as string });
   }, []);
 
   return (

@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { CartApis } from '@/apis/Cart';
-import { IAddon } from '@/components/menu/Addons';
 
 interface ICartItem {
   menu_item_id: string;
@@ -20,7 +19,13 @@ interface CartState {
     total_amount: number;
     business_id: string;
   } | null;
-  fetchCart: (val: string) => Promise<void>;
+  fetchCart: ({
+    cart_id,
+    business_id,
+  }: {
+    cart_id?: string;
+    business_id?: string;
+  }) => Promise<void>;
   updateCart: (
     menu_item_id: string,
     quantity: number,
@@ -32,9 +37,15 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   cart: null,
 
-  fetchCart: async (business_id: string) => {
-    if (!business_id) return;
-    const res = await CartApis.getCart(business_id);
+  fetchCart: async ({
+    cart_id,
+    business_id,
+  }: {
+    business_id?: string;
+    cart_id?: string;
+  }) => {
+    // if (!business_id) return;
+    const res = await CartApis.getCart({ business_id, cart_id });
     set({ cart: res.data });
   },
 

@@ -14,7 +14,8 @@ const Cart = () => {
   const { cartId } = params || {};
 
   useEffect(() => {
-    if (cartId) fetchCart(cartId as string);
+    console.log({ cartId });
+    if (cartId) fetchCart({ cart_id: cartId as string });
   }, [cartId]);
 
   if (!cart) return <div className="p-6 text-gray-500">Loading...</div>;

@@ -41,12 +41,12 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
       return;
     }
     updateCart(_id, 1, business_id, selectedAddons);
-    fetchCart(businessId as string);
+    fetchCart({ business_id: businessId as string });
   };
 
   const handleAddToCart = () => {
     updateCart(_id, 1, business_id, selectedAddons);
-    fetchCart(businessId as string);
+    fetchCart({ business_id: businessId as string });
   };
 
   return (
@@ -95,7 +95,7 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
               <button
                 onClick={() => {
                   updateCart(_id, -1, business_id, addons as any);
-                  fetchCart(businessId as string);
+                  fetchCart({ business_id: businessId as string });
                 }}
                 className="text-lg font-semibold cursor-pointer"
               >
@@ -105,7 +105,7 @@ const MenuItemCard: FC<IMenuItemProps> = (data) => {
               <button
                 onClick={() => {
                   updateCart(_id, 1, business_id, addons as any);
-                  fetchCart(businessId as string);
+                  fetchCart({ business_id: businessId as string });
                 }}
                 className="text-lg font-semibold cursor-pointer"
               >

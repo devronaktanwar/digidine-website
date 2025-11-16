@@ -21,8 +21,16 @@ export const CartApis = {
     });
   },
 
-  getCart: async (business_id: string) => {
-    return apiClient.get(`/customer/cart/${business_id}`);
+  getCart: async ({
+    business_id,
+    cart_id,
+  }: {
+    business_id?: string;
+    cart_id?: string;
+  }) => {
+    return apiClient.get(
+      `/customer/cart?business_id=${business_id}&cart_id=${cart_id}`
+    );
   },
 
   removeItem: async (cart_id: string, menu_item_id: string) => {
