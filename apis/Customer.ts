@@ -25,4 +25,8 @@ export class CustomerApis {
     const response = await apiClient.get('/customer/session');
     return response.data;
   }
+  static async getOrders() {
+    const response = await apiClient.get('/customer/orders');
+    return response.data;
+  }
 }

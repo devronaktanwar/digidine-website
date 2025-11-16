@@ -15,7 +15,15 @@ export const useSessionStore = create<SessionState>((set) => ({
   },
   fetchSession: async () => {
     const res = await CustomerApis.getSession();
-    console.log({ res });
     set({ session: res });
+  },
+}));
+interface OrderState {}
+
+export const useOrders = create<OrderState>((set) => ({
+  orders: [],
+  fetchOrders: async () => {
+    const res = await CustomerApis.getOrders();
+    set({ orders: res.data });
   },
 }));

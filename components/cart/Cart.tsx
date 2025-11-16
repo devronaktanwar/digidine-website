@@ -1,13 +1,16 @@
 'use client';
 
 import { useCartStore } from '@/store/cartStore';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Button } from '../ui/button';
+import { CartApis } from '@/apis/Cart';
+import { toast } from 'sonner';
 
 const Cart = () => {
   const { cart, fetchCart, updateCart } = useCartStore();
   const params = useParams();
+  const router = useRouter();
   const { cartId } = params || {};
 
   useEffect(() => {
@@ -17,6 +20,21 @@ const Cart = () => {
   if (!cart) return <div className="p-6 text-gray-500">Loading...</div>;
 
   const { items = [], total_amount = 0 } = cart;
+
+  const handlePlaceOrder = async () => {
+    try {
+      const { data } = await CartApis.placeOrder(cartId as string);
+      if (data?.isSuccess) {
+        toast.success('Order Placed Successfully');
+        setTimeout(() => {
+          router.push('/my-orders');
+        }, 1000);
+      }
+    } catch (err) {
+      console.log('Error:', err);
+      toast.error('Error occured');
+    }
+  };
 
   if (items.length === 0)
     return (
@@ -100,8 +118,10 @@ const Cart = () => {
         <div className="text-xl font-semibold text-right mt-6">
           Total: ₹{total_amount}
         </div>
-        <div className='w-full'>
-          <Button className='w-full'>Place Order</Button>
+        <div className="w-full">
+          <Button className="w-full" onClick={handlePlaceOrder}>
+            Place Order
+          </Button>
         </div>
       </div>
     </div>
